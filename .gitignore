@@ -46,3 +46,6 @@ nb-configuration.xml
 
 # Web Bundler
 node_modules/
+
+# Ignore application.properties
+Anonymization-tool/src/main/resources/application.properties
