@@ -3,22 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tablice u Bazi</title>
+  <title>Anonymization tool</title>
   <script src="script.js" defer></script>
 </head>
 <body>
 <div class="container">
-  <h1>Izbor Tablice</h1>
+  <h1>Anonymization tool</h1>
 
-  <label for="tables">Odaberi Tablicu:</label>
+  <label for="tables">Odaberi tablicu:</label>
   <select id="tables" name="tables">
-    <option value="">-- Odaberi Tablicu --</option>
+    <option value="">-- Odaberi tablicu --</option>
   </select>
 
+  <button onclick="resetAllChanges()">Resetiraj sve</button>
   <button onclick="exportData()">Export</button>
 
+  <div id="hashingForm" style="display:none;">
+    <h2>Hashiranje primarnog ključa</h2>
+    <label for="primaryKeyColumn">Odaberi primarni ključ:</label>
+    <select id="primaryKeyColumn"></select>
+    <button onclick="applyHashing()">Primjeni</button>
+  </div>
+
+  <div id="suppressionForm" style="display:none;">
+    <h2>Supresija podataka</h2>
+    <label for="suppressionColumn">Odaberi stupac za supresiju:</label>
+    <select id="suppressionColumn"></select>
+    <button onclick="applySuppression()">Primjeni</button>
+  </div>
+
+  <div id="noiseAdditionForm" style="display:none;">
+    <h2>Dodavanje šuma</h2>
+    <label for="noiseColumn">Odaberi numerički stupac:</label>
+    <select id="noiseColumn"></select>
+
+    <label for="noiseParameter">Odaberi parametar:</label>
+    <select id="noiseParameter">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    <button onclick="applyNoise()">Primjeni</button>
+  </div>
+
+  <div id="techniquesLog" style="margin-top: 20px;">
+    <pre id="techniqueLogText"></pre>
+  </div>
+
   <div id="tableDataContainer" style="display:none;">
-    <h2>Podaci Tablice</h2>
+    <h2>Podaci tablice</h2>
     <table id="tableData" border="1">
       <thead>
       <tr id="tableHeaders"></tr>
@@ -28,40 +68,5 @@
   </div>
 </div>
 
-<div id="hashingForm" style="display:none;">
-  <h2>Hashiranje Primarnog Ključa</h2>
-  <label for="primaryKeyColumn">Odaberi primarni ključ:</label>
-  <select id="primaryKeyColumn"></select>
-  <button onclick="applyHashing()">Primjeni Hashiranje</button>
-</div>
-
-<div id="suppressionForm" style="display:none;">
-  <h2>Supresija podataka</h2>
-  <label for="suppressionColumn">Odaberi stupac za supresiju:</label>
-  <select id="suppressionColumn"></select>
-  <button onclick="applySuppression()">Primjeni Supresiju</button>
-</div>
-
-<div id="noiseAdditionForm" style="display:none;">
-  <h2>Dodavanje Šuma</h2>
-  <label for="noiseColumn">Odaberi numerički stupac:</label>
-  <select id="noiseColumn"></select>
-
-  <label for="noiseParameter">Odaberi parametar za šum (1-10):</label>
-  <select id="noiseParameter">
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="5">5</option>
-    <option value="6">6</option>
-    <option value="7">7</option>
-    <option value="8">8</option>
-    <option value="9">9</option>
-    <option value="10">10</option>
-  </select>
-
-  <button onclick="applyNoise()">Primjeni Šum</button>
-</div>
 </body>
 </html>

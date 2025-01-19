@@ -152,6 +152,7 @@ function applyHashing() {
                 });
             }
             fetchTableData(selectedTable);
+            updateTechniquesLog(`Tablici "${selectedTable}" na stupac "${selectedColumn}" primijenjena je tehnika hashiranja.`);
         })
         .catch((error) => {
             console.error("Greška pri hashiranju:", error);
@@ -167,19 +168,31 @@ function applySuppression() {
         return;
     }
 
-    fetch(`/anonymization/supression/${selectedTable}/${selectedColumn}`, { method: "POST" })
+    fetch(`/anonymization/suppression/${selectedTable}/${selectedColumn}`, { method: "POST" })
         .then((response) => {
-            if (!response.ok) throw new Error("Greška pri supresiji.");
-            alert(`Supresija primijenjena na stupac: ${selectedColumn}`);
+            if (!response.ok) {
+                return response.text().then((message) => {
+                    if (message.includes("Technique already applied to this column")) {
+                        alert("Tehnika je već primijenjena na ovaj stupac.");
+                    } else {
+                        throw new Error("Greška pri supresiji.");
+                    }
+                });
+            }
             fetchTableData(selectedTable);
+            updateTechniquesLog(`Tablici "${selectedTable}" na stupac "${selectedColumn}" primijenjena je tehnika supresije.`);
         })
-        .catch((error) => console.error("Greška pri supresiji:", error));
+        .catch((error) => {
+            console.error("Greška pri supresiji:", error);
+        });
 }
+
 
 // Funkcija za dodavanje šuma
 function applyNoise() {
     const selectedColumn = document.getElementById("noiseColumn").value;
     const noiseParameter = document.getElementById("noiseParameter").value;
+
     if (!selectedColumn || !noiseParameter) {
         alert("Molimo odaberite stupac i parametar za šum.");
         return;
@@ -187,11 +200,27 @@ function applyNoise() {
 
     fetch(`/anonymization/noise/${selectedTable}/${selectedColumn}?param=${noiseParameter}`, { method: "POST" })
         .then((response) => {
-            if (!response.ok) throw new Error("Greška pri dodavanju šuma.");
-            alert(`Šum primijenjen na stupac: ${selectedColumn}`);
+            if (!response.ok) {
+                return response.text().then((message) => {
+                    if (message.includes("Technique already applied to this column")) {
+                        alert("Tehnika je već primijenjena na ovaj stupac.");
+                    } else {
+                        throw new Error("Greška pri dodavanju šuma.");
+                    }
+                });
+            }
             fetchTableData(selectedTable);
+            updateTechniquesLog(`Tablici "${selectedTable}" na stupac "${selectedColumn}" primijenjena je tehnika dodavanja šuma s parametrom ${noiseParameter}.`);
         })
-        .catch((error) => console.error("Greška pri dodavanju šuma:", error));
+        .catch((error) => {
+            console.error("Greška pri dodavanju šuma:", error);
+        });
+}
+
+// Funkcija za ažuriranje loga tehnika
+function updateTechniquesLog(message) {
+    const techniqueLogText = document.getElementById("techniqueLogText");
+    techniqueLogText.textContent += `\n${message}`;
 }
 
 // Funkcija za izvoz svih promijenjenih tablica u CSV
@@ -210,3 +239,37 @@ function exportData() {
             alert("Došlo je do pogreške prilikom izvoza.");
         });
 }
+
+// Funkcija za resetiranje svih promjena
+function resetAllChanges() {
+    fetch("/tables/reset", { method: "POST" })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Greška prilikom resetiranja podataka.");
+            }
+            // Ponovno učitaj sve tablice i podatke
+            fetch("/tables")
+                .then((response) => {
+                    if (!response.ok) throw new Error("Greška u dohvaćanju tablica.");
+                    return response.json();
+                })
+                .then((tables) => {
+                    populateTablesDropdown(tables);
+                    toggleFormsAndTable(false);
+                    clearTechniquesLog();
+                })
+                .catch((error) => console.error("Greška u dohvaćanju tablica:", error));
+        })
+        .catch((error) => {
+            alert("Došlo je do pogreške prilikom resetiranja.");
+            console.error("Greška prilikom resetiranja:", error);
+        });
+}
+
+function clearTechniquesLog() {
+    const techniqueLogText = document.getElementById("techniqueLogText");
+    techniqueLogText.textContent = "";
+}
+
+
+

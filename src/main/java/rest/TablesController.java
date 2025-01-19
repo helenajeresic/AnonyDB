@@ -56,4 +56,12 @@ public class TablesController {
                     .build();
         }
     }
+
+    @POST
+    @Path("/reset")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response resetAllChanges() {
+        tablesService.resetAllChanges();
+        return Response.ok().build();
+    }
 }

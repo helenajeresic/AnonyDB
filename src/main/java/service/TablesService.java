@@ -118,6 +118,12 @@ public class TablesService {
         return columns;
     }
 
+    // Resetiraj sve promjene
+    public void resetAllChanges() {
+        modifiedData.clear();
+        columnAnonymizationState.clear();
+    }
+
     private boolean tableExists(String tableName) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DatabaseMetaData metaData = connection.getMetaData();
