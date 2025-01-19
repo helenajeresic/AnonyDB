@@ -8,6 +8,8 @@ import java.nio.file.*;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @ApplicationScoped
 public class ExportService {
@@ -16,25 +18,25 @@ public class ExportService {
     TablesService tablesService;
 
     /**
-     * Izvoz svih anonimiziranih tablica u CSV format u export direktorij
+     * Izvoz svih anonimiziranih tablica u CSV format unutar ZIP arhive
      */
     public Path exportAllData() throws IOException, SQLException {
-        Path exportDir = Paths.get("export");
-        if (!Files.exists(exportDir)) {
-            Files.createDirectory(exportDir);
-        }
+        Path zipFilePath = Paths.get("anonymized database.zip");
 
-        for (String tableName : tablesService.getTables()) {
-            List<Map<String, Object>> tableData = tablesService.getTableData(tableName);
+        try (FileOutputStream fos = new FileOutputStream(zipFilePath.toFile());
+             ZipOutputStream zipOut = new ZipOutputStream(fos)) {
 
-            File csvFile = new File(exportDir.toFile(), tableName + ".csv");
+            for (String tableName : tablesService.getTables()) {
+                List<Map<String, Object>> tableData = tablesService.getTableData(tableName);
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
+                ZipEntry zipEntry = new ZipEntry(tableName + ".csv");
+                zipOut.putNextEntry(zipEntry);
+
                 if (!tableData.isEmpty()) {
                     Map<String, Object> firstRow = tableData.getFirst();
                     String headers = String.join(";", firstRow.keySet());
-                    writer.write(headers);
-                    writer.newLine();
+                    zipOut.write(headers.getBytes());
+                    zipOut.write("\n".getBytes());
                 }
 
                 for (Map<String, Object> row : tableData) {
@@ -51,12 +53,14 @@ public class ExportService {
                         rowData.deleteCharAt(rowData.length() - 1);
                     }
 
-                    writer.write(rowData.toString());
-                    writer.newLine();
+                    zipOut.write(rowData.toString().getBytes());
+                    zipOut.write("\n".getBytes());
                 }
+
+                zipOut.closeEntry();
             }
         }
 
-        return exportDir;
+        return zipFilePath;
     }
 }
