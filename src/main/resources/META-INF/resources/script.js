@@ -142,12 +142,22 @@ function applyHashing() {
 
     fetch(`/anonymization/hash/${selectedTable}/${selectedColumn}`, { method: "POST" })
         .then((response) => {
-            if (!response.ok) throw new Error("Greška pri hashiranju.");
-            alert(`Hashiranje primijenjeno na primarni ključ: ${selectedColumn}`);
+            if (!response.ok) {
+                return response.text().then((message) => {
+                    if (message.includes("Technique already applied to this column")) {
+                        alert("Tehnika je već primijenjena na ovaj stupac.");
+                    } else {
+                        throw new Error("Greška pri hashiranju.");
+                    }
+                });
+            }
             fetchTableData(selectedTable);
         })
-        .catch((error) => console.error("Greška pri hashiranju:", error));
+        .catch((error) => {
+            console.error("Greška pri hashiranju:", error);
+        });
 }
+
 
 // Funkcija za supresiju
 function applySuppression() {

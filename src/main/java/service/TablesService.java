@@ -14,6 +14,7 @@ public class TablesService {
     DataSource dataSource;
 
     private final Map<String, List<Map<String, Object>>> modifiedData = new HashMap<>();
+    private final Map<String, Map<String, String>> columnAnonymizationState = new HashMap<>();
 
     public List<String> getTables() throws SQLException {
         List<String> tables = new ArrayList<>();
@@ -125,4 +126,11 @@ public class TablesService {
         }
     }
 
+    public boolean isColumnAnonymized(String tableName, String columnName) {
+        return columnAnonymizationState.getOrDefault(tableName, new HashMap<>()).containsKey(columnName);
+    }
+
+    public void setColumnAnonymizationTechnique(String tableName, String columnName, String technique) {
+        columnAnonymizationState.computeIfAbsent(tableName, k -> new HashMap<>()).put(columnName, technique);
+    }
 }

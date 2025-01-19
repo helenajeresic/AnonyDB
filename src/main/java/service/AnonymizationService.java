@@ -13,8 +13,11 @@ public class AnonymizationService {
     TablesService tablesService;
 
     public void hashPrimaryKey(String tableName, String primaryKeyColumn, List<Map<String, Object>> tableData) throws Exception {
-        Map<Object, String> hashedValues = new HashMap<>();
+        if (tablesService.isColumnAnonymized(tableName, primaryKeyColumn)) {
+            throw new Exception("Technique already applied to this column.");
+        }
 
+        Map<Object, String> hashedValues = new HashMap<>();
         for (Map<String, Object> row : tableData) {
             Object primaryKeyValue = row.get(primaryKeyColumn);
             String hashedValue = hashValue(primaryKeyValue.toString());
@@ -22,7 +25,19 @@ public class AnonymizationService {
             row.put(primaryKeyColumn, hashedValue);
         }
 
+        tablesService.setColumnAnonymizationTechnique(tableName, primaryKeyColumn, "hash");
+
         updateForeignKeysInMemory(tableName, hashedValues);
+    }
+
+    private String hashValue(String value) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(value.getBytes());
+        StringBuilder hashString = new StringBuilder();
+        for (byte b : hashBytes) {
+            hashString.append(String.format("%02x", b));
+        }
+        return hashString.substring(0, 15);
     }
 
     private void updateForeignKeysInMemory(String primaryTableName, Map<Object, String> hashedValues) throws SQLException {
@@ -55,14 +70,5 @@ public class AnonymizationService {
             }
         }
     }
-
-    private String hashValue(String value) throws Exception {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = digest.digest(value.getBytes());
-        StringBuilder hashString = new StringBuilder();
-        for (byte b : hashBytes) {
-            hashString.append(String.format("%02x", b));
-        }
-        return hashString.substring(0, 15);
-    }
 }
+
