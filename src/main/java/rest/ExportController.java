@@ -19,8 +19,6 @@ public class ExportController {
     @Path("/all")
     @Produces("application/json")
     public Response exportAllData() {
-        System.out.println("Exporting all data...");
-
         try {
             java.nio.file.Path exportDir = exportService.exportAllData();
 

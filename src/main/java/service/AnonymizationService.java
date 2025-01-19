@@ -2,11 +2,15 @@ package service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import java.security.MessageDigest;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class AnonymizationService {
+
+    @Inject
+    TablesService tablesService;
 
     public void hashPrimaryKey(String tableName, String primaryKeyColumn, List<Map<String, Object>> tableData) throws Exception {
         Map<Object, String> hashedValues = new HashMap<>();
@@ -17,6 +21,39 @@ public class AnonymizationService {
             hashedValues.put(primaryKeyValue, hashedValue);
             row.put(primaryKeyColumn, hashedValue);
         }
+
+        updateForeignKeysInMemory(tableName, hashedValues);
+    }
+
+    private void updateForeignKeysInMemory(String primaryTableName, Map<Object, String> hashedValues) throws SQLException {
+        List<String> tables = tablesService.getTables();
+
+        for (String table : tables) {
+            List<Map<String, Object>> metadata = tablesService.getTableMetadata(table);
+            for (Map<String, Object> column : metadata) {
+                if ("true".equals(String.valueOf(column.get("isForeignKey")))) {
+                    String fkColumn = (String) column.get("columnName");
+                    String referencedTable = (String) column.get("referencedTable");
+
+                    if (primaryTableName.equals(referencedTable)) {
+                        updateForeignKeyValues(table, fkColumn, hashedValues);
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateForeignKeyValues(String tableName, String foreignKeyColumn, Map<Object, String> hashedValues) throws SQLException {
+        List<Map<String, Object>> tableData = tablesService.getTableData(tableName);
+
+        for (Map<String, Object> row : tableData) {
+            Object foreignKeyValue = row.get(foreignKeyColumn);
+
+            if (hashedValues.containsKey(foreignKeyValue)) {
+                String hashedForeignKey = hashedValues.get(foreignKeyValue);
+                row.put(foreignKeyColumn, hashedForeignKey);
+            }
+        }
     }
 
     private String hashValue(String value) throws Exception {
@@ -26,6 +63,6 @@ public class AnonymizationService {
         for (byte b : hashBytes) {
             hashString.append(String.format("%02x", b));
         }
-        return hashString.toString();
+        return hashString.substring(0, 15);
     }
 }
