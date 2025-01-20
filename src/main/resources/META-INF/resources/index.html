@@ -3,12 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anonymization tool</title>
-  <script src="script.js" defer></script>
+  <title>AnomDB</title>
+  <link rel="stylesheet" href="css/title.css">
+  <link rel="stylesheet" href="css/table-select.css">
+  <link rel="stylesheet" href="css/table-data.css">
+  <link rel="stylesheet" href="css/anonymization.css">
+  <link rel="stylesheet" href="css/logging.css">
+
+  <script src="js/tables.js" defer></script>
+  <script src="js/anonymization.js" defer></script>
+  <script src="js/export.js" defer></script>
+  <script src="js/reset.js" defer></script>
 </head>
 <body>
 <div class="container">
-  <h1>Anonymization tool</h1>
+  <h1>AnomDB</h1>
 
   <label for="tables">Odaberi tablicu:</label>
   <select id="tables" name="tables">
@@ -53,13 +62,13 @@
     <button onclick="applyNoise()">Primjeni</button>
   </div>
 
-  <div id="techniquesLog" style="margin-top: 20px;">
-    <pre id="techniqueLogText"></pre>
+  <div id="log" style="margin-top: 20px;">
+    <pre id="logText"></pre>
   </div>
 
   <div id="tableDataContainer" style="display:none;">
     <h2>Podaci tablice</h2>
-    <table id="tableData" border="1">
+    <table id="tableData">
       <thead>
       <tr id="tableHeaders"></tr>
       </thead>
