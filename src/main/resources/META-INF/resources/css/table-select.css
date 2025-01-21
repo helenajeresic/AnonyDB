@@ -1,0 +1,89 @@
+.left-side-top {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+    background-color: #F7F7F7;
+}
+
+.left-side-top-left {
+    width: 20%;
+    text-align: left;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#logo {
+    max-width: 100%;
+    height: auto;
+}
+
+.left-side-top-right {
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+}
+
+.left-side-top-right label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.left-side-top-right select,
+.left-side-top-right button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.reset-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #cccccc;
+    color: white;
+    cursor: pointer;
+}
+
+.reset-button:hover {
+    background-color: #c82333;
+}
+
+.reset-icon {
+    width: 20px;
+    height: auto;
+}
+
+.export-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #cccccc;
+    color: white;
+    cursor: pointer;
+}
+
+.export-button:hover {
+    background-color: #218838;
+}
+
+.export-icon {
+    width: 20px;
+    height: auto;
+}

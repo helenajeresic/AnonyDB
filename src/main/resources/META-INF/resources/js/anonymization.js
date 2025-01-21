@@ -10,8 +10,10 @@ function applyHashing() {
         .then((response) => {
             if (!response.ok) {
                 return response.text().then((message) => {
-                    if (message.includes("Technique already applied to this column")) {
+                    if (message.includes("Technique already applied to this column.")) {
                         alert("Tehnika je već primijenjena na ovaj stupac.");
+                    } else if (message.includes("Column is not a primary key.")) {
+                        alert("Odabrani stupac nije primarni ključ.");
                     } else {
                         throw new Error("Greška pri hashiranju.");
                     }
@@ -37,10 +39,12 @@ function applySuppression() {
         .then((response) => {
             if (!response.ok) {
                 return response.text().then((message) => {
-                    if (message.includes("Technique already applied to this column")) {
+                    if (message.includes("Technique already applied to this column.")) {
                         alert("Tehnika je već primijenjena na ovaj stupac.");
+                    } else if (message.includes("Column is a primary key or foreign key.")) {
+                        alert("Odabrani stupac ne može se obraditi šumom jer je primarni ili strani ključ.");
                     } else {
-                        throw new Error("Greška pri supresiji.");
+                        throw new Error("Greška pri dodavanju šuma.");
                     }
                 });
             }
@@ -81,8 +85,26 @@ function applyNoise() {
         });
 }
 
-// Funkcija za ažuriranje loga tehnika
+
 function updateTechniquesLog(message) {
     const logText = document.getElementById("logText");
     logText.textContent += `\n${message}`;
+}
+
+function openTab(event, formName) {
+    var i, tabContent, tabLinks;
+
+    tabContent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = "none";
+    }
+
+    tabLinks = document.getElementsByClassName("tab-link");
+    for (i = 0; i < tabLinks.length; i++) {
+        tabLinks[i].classList.remove("active");
+    }
+
+    document.getElementById(formName).style.display = "block";
+
+    event.currentTarget.classList.add("active");
 }

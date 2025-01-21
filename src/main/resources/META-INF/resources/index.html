@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AnomDB</title>
+  <title>AnonyDB</title>
+  <link rel="icon" href="/images/icon.png" type="image/x-icon">
   <link rel="stylesheet" href="css/title.css">
   <link rel="stylesheet" href="css/table-select.css">
   <link rel="stylesheet" href="css/table-data.css">
   <link rel="stylesheet" href="css/anonymization.css">
   <link rel="stylesheet" href="css/logging.css">
-
+  <link rel="stylesheet" href="css/main.css">
   <script src="js/tables.js" defer></script>
   <script src="js/anonymization.js" defer></script>
   <script src="js/export.js" defer></script>
@@ -17,65 +18,90 @@
 </head>
 <body>
 <div class="container">
-  <h1>AnomDB</h1>
+  <div class="left-side">
 
-  <label for="tables">Odaberi tablicu:</label>
-  <select id="tables" name="tables">
-    <option value="">-- Odaberi tablicu --</option>
-  </select>
+    <div class="left-side-top">
+      <div class="left-side-top-left">
+        <img src="/images/logo.png" alt="AnonyDB Logo" id="logo">
+      </div>
 
-  <button onclick="resetAllChanges()">Resetiraj sve</button>
-  <button onclick="exportData()">Export</button>
+      <div class="left-side-top-right">
+        <label for="tables">Odaberi tablicu za obradu:</label>
+        <select id="tables" name="tables"></select>
+        <button class="reset-button" onclick="resetAllChanges()" title="resetiraj sve promjene">
+          <img src="images/reset.png" alt="Reset Icon" class="reset-icon">
+        </button>
+        <button class="export-button" onclick="exportData()" title="izvezi anonimizirane podatke">
+          <img src="images/export.png" alt="Export Icon" class="export-icon">
+        </button>
+      </div>
+    </div>
 
-  <div id="hashingForm" style="display:none;">
-    <h2>Hashiranje primarnog ključa</h2>
-    <label for="primaryKeyColumn">Odaberi primarni ključ:</label>
-    <select id="primaryKeyColumn"></select>
-    <button onclick="applyHashing()">Primjeni</button>
+    <div id="tableDataContainer" style="display: none;">
+      <div class="table-concept">
+        <div class="table-display">
+          <span id="tableInfo"></span>
+        </div>
+        <div class="table-scroll-container">
+          <table id="tableData">
+            <thead>
+            <tr id="tableHeaders"></tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <button id="prevPage" class="disabled" onclick="changePage('prev')">« Prethodna</button>
+          <span id="pageNumbers"></span>
+          <button id="nextPage" onclick="changePage('next')">Sljedeća »</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="suppressionForm" style="display:none;">
-    <h2>Supresija podataka</h2>
-    <label for="suppressionColumn">Odaberi stupac za supresiju:</label>
-    <select id="suppressionColumn"></select>
-    <button onclick="applySuppression()">Primjeni</button>
-  </div>
-
-  <div id="noiseAdditionForm" style="display:none;">
-    <h2>Dodavanje šuma</h2>
-    <label for="noiseColumn">Odaberi numerički stupac:</label>
-    <select id="noiseColumn"></select>
-
-    <label for="noiseParameter">Odaberi parametar:</label>
-    <select id="noiseParameter">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-    </select>
-    <button onclick="applyNoise()">Primjeni</button>
-  </div>
-
-  <div id="log" style="margin-top: 20px;">
-    <pre id="logText"></pre>
-  </div>
-
-  <div id="tableDataContainer" style="display:none;">
-    <h2>Podaci tablice</h2>
-    <table id="tableData">
-      <thead>
-      <tr id="tableHeaders"></tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
+  <div class="right-side">
+    <div class="forms">
+      <div class="tabs">
+        <button class="tab-link active" onclick="openTab(event, 'hashingForm')">Hashiranje</button>
+        <button class="tab-link" onclick="openTab(event, 'suppressionForm')">Supresija</button>
+        <button class="tab-link" onclick="openTab(event, 'noiseAdditionForm')">Dodavanje šuma</button>
+      </div>
+      <div id="hashingForm" class="tab-content" style="display: block;">
+        <h2>Hashiranje primarnog ključa</h2>
+        <label for="primaryKeyColumn">Odaberi primarni ključ:</label>
+        <select id="primaryKeyColumn"></select>
+        <button onclick="applyHashing()">Primjeni</button>
+      </div>
+      <div id="suppressionForm" class="tab-content" style="display: none;">
+        <h2>Supresija podataka</h2>
+        <label for="suppressionColumn">Odaberi stupac za supresiju:</label>
+        <select id="suppressionColumn"></select>
+        <button onclick="applySuppression()">Primjeni</button>
+      </div>
+      <div id="noiseAdditionForm" class="tab-content" style="display: none;">
+        <h2>Dodavanje šuma</h2>
+        <label for="noiseColumn">Odaberi numerički stupac:</label>
+        <select id="noiseColumn"></select>
+        <label for="noiseParameter">Odaberi parametar:</label>
+        <select id="noiseParameter">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <button onclick="applyNoise()">Primjeni</button>
+      </div>
+    </div>
+    <div class="log" id="log">
+      <pre id="logText"></pre>
+    </div>
   </div>
 </div>
-
 </body>
 </html>

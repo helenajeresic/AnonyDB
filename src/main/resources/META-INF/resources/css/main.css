@@ -1,0 +1,46 @@
+body {
+    background-color: #F7F7F7;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 100vh;
+}
+
+.left-side {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-grow: 1;
+    text-align: left;
+    border-right: 2px solid #ddd;
+}
+
+
+.right-side {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    background-color: #cccccc;
+    overflow-y: auto;
+    box-sizing: border-box;
+    border-left: 2px solid #ddd;
+}
+
+.right-side .forms {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-side .log {
+    height: 50%;
+    margin-top: 20px;
+    border-top: 2px solid #ddd;
+    padding-top: 10px;
+    overflow-y: auto;
+}
