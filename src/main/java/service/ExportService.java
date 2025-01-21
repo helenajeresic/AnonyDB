@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,27 +18,26 @@ public class ExportService {
     @Inject
     TablesService tablesService;
 
-    /**
-     * Izvoz svih anonimiziranih tablica u CSV format unutar ZIP arhive
-     */
     public Path exportAllData() throws IOException, SQLException {
         Path zipFilePath = Paths.get("AnonyDB.zip");
 
         try (FileOutputStream fos = new FileOutputStream(zipFilePath.toFile());
-             ZipOutputStream zipOut = new ZipOutputStream(fos)) {
+             ZipOutputStream zipOut = new ZipOutputStream(fos, StandardCharsets.UTF_8)) {
 
             for (String tableName : tablesService.getTables()) {
                 List<Map<String, Object>> tableData = tablesService.getTableData(tableName);
 
+                if (tableData == null || tableData.isEmpty()) {
+                    continue;
+                }
+
                 ZipEntry zipEntry = new ZipEntry(tableName + ".csv");
                 zipOut.putNextEntry(zipEntry);
 
-                if (!tableData.isEmpty()) {
-                    Map<String, Object> firstRow = tableData.getFirst();
-                    String headers = String.join(";", firstRow.keySet());
-                    zipOut.write(headers.getBytes());
-                    zipOut.write("\n".getBytes());
-                }
+                Map<String, Object> firstRow = tableData.getFirst();
+                String headers = String.join(";", firstRow.keySet());
+                zipOut.write(headers.getBytes(StandardCharsets.UTF_8));
+                zipOut.write("\n".getBytes());
 
                 for (Map<String, Object> row : tableData) {
                     StringBuilder rowData = new StringBuilder();
@@ -52,13 +52,16 @@ public class ExportService {
                     if (!rowData.isEmpty()) {
                         rowData.deleteCharAt(rowData.length() - 1);
                     }
-
-                    zipOut.write(rowData.toString().getBytes());
+                    zipOut.write(rowData.toString().getBytes(StandardCharsets.UTF_8));
                     zipOut.write("\n".getBytes());
                 }
 
                 zipOut.closeEntry();
             }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
         }
 
         return zipFilePath;
