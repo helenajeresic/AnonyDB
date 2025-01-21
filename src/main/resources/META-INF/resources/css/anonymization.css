@@ -78,7 +78,8 @@
 .form-button-action {
     width: 200px;
     padding: 10px;
-    background-color: #cccccc;
+    background-color: #8f8f8f;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -89,4 +90,5 @@
 
 .form-button-action:hover {
     background-color: #7a7a7a;
+    color: white;
 }
