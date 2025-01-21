@@ -84,3 +84,9 @@ tbody tr.empty-row td {
 .pagination button.disabled {
     cursor: not-allowed;
 }
+
+.pagination button.active {
+    background-color: #7a7a7a;
+    font-weight: bold;
+    cursor: default;
+}

@@ -173,7 +173,18 @@ function updatePageNumbers() {
     pageNumbers.innerHTML = "";
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-    for (let i = 1; i <= totalPages; i++) {
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, currentPage + 2);
+
+    if (endPage - startPage < 5 && totalPages > 5) {
+        if (startPage > 1) {
+            startPage = Math.max(1, endPage - 4);
+        } else {
+            endPage = Math.min(totalPages, startPage + 4);
+        }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
         const pageNumber = document.createElement("button");
         pageNumber.textContent = i;
         pageNumber.className = i === currentPage ? "active" : "";
@@ -183,7 +194,28 @@ function updatePageNumbers() {
         };
         pageNumbers.appendChild(pageNumber);
     }
+
+    if (startPage > 1) {
+        const firstPageEllipsis = document.createElement("button");
+        firstPageEllipsis.textContent = "...";
+        firstPageEllipsis.onclick = () => {
+            currentPage = Math.max(1, currentPage - 5);
+            loadPageData();
+        };
+        pageNumbers.insertBefore(firstPageEllipsis, pageNumbers.firstChild);
+    }
+
+    if (endPage < totalPages) {
+        const lastPageEllipsis = document.createElement("button");
+        lastPageEllipsis.textContent = "...";
+        lastPageEllipsis.onclick = () => {
+            currentPage = Math.min(totalPages, currentPage + 5);
+            loadPageData();
+        };
+        pageNumbers.appendChild(lastPageEllipsis);
+    }
 }
+
 
 // Popunjavanje dropdownova za forme
 function populateForms(data) {
