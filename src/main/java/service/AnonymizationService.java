@@ -15,6 +15,10 @@ public class AnonymizationService {
     TablesService tablesService;
 
     public void hashPrimaryKey(String tableName, String primaryKeyColumn) throws Exception {
+        if (!tablesService.isPrimaryKey(tableName, primaryKeyColumn)) {
+            throw new Exception("Column is not a primary key.");
+        }
+
         List<Map<String, Object>> tableData = tablesService.getTableData(tableName);
         if (tablesService.isColumnAnonymized(tableName, primaryKeyColumn)) {
             throw new Exception("Technique already applied to this column.");
@@ -75,6 +79,14 @@ public class AnonymizationService {
     }
 
     public void suppressColumn(String tableName, String columnName) throws Exception {
+        if (tablesService.isPrimaryKey(tableName, columnName)) {
+            throw new Exception("Column is a primary key or foreign key.");
+        }
+
+        if (tablesService.isForeignKey(tableName, columnName)) {
+            throw new Exception("Column is a primary key or foreign key.");
+        }
+
         List<Map<String, Object>> tableData = tablesService.getTableData(tableName);
         if (tablesService.isColumnAnonymized(tableName, columnName)) {
             throw new Exception("Technique already applied to this column.");
@@ -88,6 +100,14 @@ public class AnonymizationService {
     }
 
     public void applyNoise(String tableName, String columnName, String noiseParameter) throws Exception {
+        if (tablesService.isPrimaryKey(tableName, columnName)) {
+            throw new Exception("Column is a primary key or foreign key.");
+        }
+
+        if (tablesService.isForeignKey(tableName, columnName)) {
+            throw new Exception("Column is a primary key or foreign key.");
+        }
+
         List<Map<String, Object>> tableData = tablesService.getTableData(tableName);
         if (tablesService.isColumnAnonymized(tableName, columnName)) {
             throw new Exception("Technique already applied to this column.");
@@ -142,4 +162,3 @@ public class AnonymizationService {
         }
     }
 }
-

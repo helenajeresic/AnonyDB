@@ -139,4 +139,24 @@ public class TablesService {
     public void setColumnAnonymizationTechnique(String tableName, String columnName, String technique) {
         columnAnonymizationState.computeIfAbsent(tableName, k -> new HashMap<>()).put(columnName, technique);
     }
+
+    public boolean isPrimaryKey(String tableName, String columnName) throws SQLException {
+        List<Map<String, Object>> metadata = getTableMetadata(tableName);
+        for (Map<String, Object> column : metadata) {
+            if (columnName.equals(column.get("columnName")) && Boolean.TRUE.equals(column.get("isPrimaryKey"))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isForeignKey(String tableName, String columnName) throws SQLException {
+        List<Map<String, Object>> metadata = getTableMetadata(tableName);
+        for (Map<String, Object> column : metadata) {
+            if (columnName.equals(column.get("columnName")) && Boolean.TRUE.equals(column.get("isForeignKey"))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
