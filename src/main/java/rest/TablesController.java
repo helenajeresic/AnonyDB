@@ -24,7 +24,7 @@ public class TablesController {
             return Response.ok(tables).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Greška prilikom dohvaćanja tablica: " + e.getMessage())
+                    .entity("Error fetching tables: " + e.getMessage())
                     .build();
         }
     }
@@ -38,7 +38,7 @@ public class TablesController {
             return Response.ok(data).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Greška prilikom dohvaćanja podataka za tablicu: " + e.getMessage())
+                    .entity("Error fetching data for table: " + e.getMessage())
                     .build();
         }
     }
@@ -52,7 +52,7 @@ public class TablesController {
             return Response.ok(metadata).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Greška prilikom dohvaćanja metapodataka: " + e.getMessage())
+                    .entity("Error fetching metadata: " + e.getMessage())
                     .build();
         }
     }

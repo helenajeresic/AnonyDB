@@ -19,10 +19,10 @@ public class AnonymizationController {
                                    @PathParam("primaryKeyColumn") String primaryKeyColumn) {
         try {
             anonymizationService.hashPrimaryKey(tableName, primaryKeyColumn);
-            return Response.ok("Hashiranje završeno za tablicu: " + tableName).build();
+            return Response.ok("Hashing completed for table: " + tableName).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Greška prilikom hashiranja: " + e.getMessage())
+                    .entity("Error during hashing: " + e.getMessage())
                     .build();
         }
     }
@@ -34,10 +34,10 @@ public class AnonymizationController {
                                      @PathParam("columnName") String columnName) {
         try {
             anonymizationService.suppressColumn(tableName, columnName);
-            return Response.ok("Supresija završena za stupac: " + columnName).build();
+            return Response.ok("Suppression completed for column: " + columnName).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Greška prilikom primjene supresije: " + e.getMessage())
+                    .entity("Error applying suppression: " + e.getMessage())
                     .build();
         }
     }
@@ -50,10 +50,10 @@ public class AnonymizationController {
                                @QueryParam("param") String noiseParameter) {
         try {
             anonymizationService.applyNoise(tableName, columnName, noiseParameter);
-            return Response.ok("Šum primijenjen na stupac: " + columnName).build();
+            return Response.ok("Noise applied to column: " + columnName).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Greška prilikom primjene šuma: " + e.getMessage())
+                    .entity("Error applying noise: " + e.getMessage())
                     .build();
         }
     }

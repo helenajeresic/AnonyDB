@@ -11,11 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetch("/tables")
         .then((response) => {
-            if (!response.ok) throw new Error("Greška u dohvaćanju tablica.");
+            if (!response.ok) throw new Error("Error fetching tables.");
             return response.json();
         })
         .then((tables) => populateTablesDropdown(tables))
-        .catch((error) => console.error("Greška u dohvaćanju tablica:", error));
+        .catch((error) => console.error("Error fetching tables:", error));
 });
 
 // Popunjavanje dropdowna s imenima tablica
@@ -42,23 +42,20 @@ document.getElementById("tables").addEventListener("change", function (event) {
 function toggleFormsAndTable(isVisible) {
     const displayValue = isVisible ? "block" : "none";
 
-    // Prikazivanje/sklapanje formi
     document.getElementById("tableDataContainer").style.display = displayValue;
     document.getElementById("hashingForm").style.display = displayValue;
     document.getElementById("suppressionForm").style.display = displayValue;
     document.getElementById("noiseAdditionForm").style.display = displayValue;
 
-    // Prikazivanje ili skrivanje tabova
     const tabLinks = document.getElementsByClassName("tab-link");
     for (let i = 0; i < tabLinks.length; i++) {
         tabLinks[i].style.display = isVisible ? "inline-block" : "none";
     }
 
-    // Ako je prikazano, postavi prvi tab (Hashiranje) kao aktivan
     if (isVisible) {
-        openTab(event, 'hashingForm'); // Poziva openTab s 'hashingForm' kao početnim tabom
+        openTab(event, 'hashingForm');
     }
-    // Ako nije prikazano, sakrij aktivne tabove
+
     else {
         const tabContents = document.getElementsByClassName("tab-content");
         for (let i = 0; i < tabContents.length; i++) {
@@ -71,11 +68,11 @@ function toggleFormsAndTable(isVisible) {
 function fetchTableData(tableName) {
     Promise.all([
         fetch(`/tables/${tableName}`).then((response) => {
-            if (!response.ok) throw new Error("Greška u dohvaćanju podataka tablice.");
+            if (!response.ok) throw new Error("Error fetching table data.");
             return response.json();
         }),
         fetch(`/tables/metadata/${tableName}`).then((response) => {
-            if (!response.ok) throw new Error("Greška u dohvaćanju metapodataka tablice.");
+            if (!response.ok) throw new Error("Error fetching table metadata.");
             return response.json();
         }),
     ])
@@ -87,7 +84,7 @@ function fetchTableData(tableName) {
             loadPageData();
             populateForms(data);
         })
-        .catch((error) => console.error("Greška u dohvaćanju podataka ili metapodataka:", error));
+        .catch((error) => console.error("Error fetching data or metadata:", error));
 }
 
 // Učitaj podatke za trenutnu stranicu
@@ -101,6 +98,7 @@ function loadPageData() {
     updatePaginationInfo();
 }
 
+// Prikaz podataka u tablici
 // Prikaz podataka u tablici
 function displayTableData(data) {
     const tableHeaders = document.getElementById("tableHeaders");
@@ -127,7 +125,7 @@ function displayTableData(data) {
                 const td = document.createElement("td");
                 let cellValue = row[header];
 
-                if (dateColumns.includes(header)) {
+                if (dateColumns.includes(header) && !isNaN(Date.parse(cellValue))) {
                     cellValue = formatDate(cellValue);
                 }
 
@@ -137,9 +135,10 @@ function displayTableData(data) {
             tableBody.appendChild(tr);
         });
     } else {
-        console.warn("Tablica je prazna.");
+        console.warn("Table is empty.");
     }
 }
+
 
 // Ažuriranje informacija o paginaciji
 function updatePaginationInfo() {

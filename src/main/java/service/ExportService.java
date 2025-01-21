@@ -21,7 +21,7 @@ public class ExportService {
      * Izvoz svih anonimiziranih tablica u CSV format unutar ZIP arhive
      */
     public Path exportAllData() throws IOException, SQLException {
-        Path zipFilePath = Paths.get("anonymized database.zip");
+        Path zipFilePath = Paths.get("AnonyDB.zip");
 
         try (FileOutputStream fos = new FileOutputStream(zipFilePath.toFile());
              ZipOutputStream zipOut = new ZipOutputStream(fos)) {

@@ -1,9 +1,8 @@
-// Funkcija za izvoz svih promijenjenih tablica u CSV
 function exportData() {
     fetch("/export/all", { method: "POST" })
         .then((response) => {
             if (!response.ok) {
-                throw new Error("Greška prilikom izvoza podataka.");
+                throw new Error("Error during data export.");
             }
             return response.json();
         })
@@ -14,4 +13,3 @@ function exportData() {
             alert("Došlo je do pogreške prilikom izvoza.");
         });
 }
-

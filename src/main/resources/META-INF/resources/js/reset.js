@@ -1,4 +1,3 @@
-// Funkcija za resetiranje svih promjena
 function resetAllChanges() {
     const userConfirmed = window.confirm("Jeste li sigurni da želite resetirati sve promjene? Ova akcija će vratiti izvorno stanje baze podataka.");
 
@@ -6,11 +5,11 @@ function resetAllChanges() {
         fetch("/tables/reset", { method: "POST" })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("Greška prilikom resetiranja podataka.");
+                    throw new Error("Error during reset.");
                 }
                 fetch("/tables")
                     .then((response) => {
-                        if (!response.ok) throw new Error("Greška u dohvaćanju tablica.");
+                        if (!response.ok) throw new Error("Error fetching tables.");
                         return response.json();
                     })
                     .then((tables) => {
@@ -18,14 +17,14 @@ function resetAllChanges() {
                         toggleFormsAndTable(false);
                         clearTechniquesLog();
                     })
-                    .catch((error) => console.error("Greška u dohvaćanju tablica:", error));
+                    .catch((error) => console.error("Error fetching tables:", error));
             })
             .catch((error) => {
                 alert("Došlo je do pogreške prilikom resetiranja.");
-                console.error("Greška prilikom resetiranja:", error);
+                console.error("Error during reset:", error);
             });
     } else {
-        console.log("Korisnik je otkazao resetiranje.");
+        console.log("User cancelled reset.");
     }
 }
 

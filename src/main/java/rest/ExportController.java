@@ -23,10 +23,10 @@ public class ExportController {
             java.nio.file.Path exportDir = exportService.exportAllData();
 
             if (Files.exists(exportDir)) {
-                String jsonResponse = "{\"message\": \"Podaci su uspješno izvezeni u direktorij: " + exportDir + "\"}";
+                String jsonResponse = "{\"message\": \"Data successfully exported to directory: " + exportDir + "\"}";
                 return Response.ok(jsonResponse, "application/json").build();
             } else {
-                String jsonResponse = "{\"message\": \"Došlo je do pogreške prilikom izvoza podataka.\"}";
+                String jsonResponse = "{\"message\": \"An error occurred during data export.\"}";
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                         .entity(jsonResponse)
                         .type("application/json")
@@ -34,7 +34,7 @@ public class ExportController {
             }
         } catch (IOException | SQLException e) {
             e.printStackTrace();
-            String jsonResponse = "{\"message\": \"Greška prilikom izvoza podataka: " + e.getMessage() + "\"}";
+            String jsonResponse = "{\"message\": \"Error during data export: " + e.getMessage() + "\"}";
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(jsonResponse)
                     .type("application/json")
@@ -42,3 +42,4 @@ public class ExportController {
         }
     }
 }
+
