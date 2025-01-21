@@ -44,7 +44,7 @@ public class AnonymizationService {
         for (byte b : hashBytes) {
             hashString.append(String.format("%02x", b));
         }
-        return hashString.substring(0, 15);
+        return hashString.toString();
     }
 
     private void updateForeignKeys(String primaryTableName, Map<Object, String> hashedValues) throws SQLException {
