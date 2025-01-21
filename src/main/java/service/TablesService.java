@@ -96,7 +96,6 @@ public class TablesService {
             }
         }
 
-        // Dodaj informacije o stranim ključevima
         try (Connection connection = dataSource.getConnection();
              ResultSet foreignKeys = connection.getMetaData().getImportedKeys(null, null, tableName)) {
 

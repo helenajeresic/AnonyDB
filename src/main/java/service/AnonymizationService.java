@@ -130,23 +130,15 @@ public class AnonymizationService {
     }
 
     private double applyNoiseToNumericValue(Object originalValue, double noiseRange) {
-        double noisyValue;
 
-        if (originalValue instanceof Integer) {
-            noisyValue = (Integer) originalValue + (int) (Math.random() * (2 * noiseRange + 1) - noiseRange);
-        } else if (originalValue instanceof Long) {
-            noisyValue = (Long) originalValue + (int) (Math.random() * (2 * noiseRange + 1) - noiseRange);
-        } else if (originalValue instanceof Float) {
-            noisyValue = (Float) originalValue + (Math.random() * noiseRange - noiseRange / 2);
-        } else if (originalValue instanceof Double) {
-            noisyValue = (Double) originalValue + (Math.random() * noiseRange - noiseRange / 2);
-        } else if (originalValue instanceof BigDecimal) {
-            noisyValue = ((BigDecimal) originalValue).doubleValue() + (Math.random() * noiseRange - noiseRange / 2);
-        } else {
-            throw new IllegalArgumentException("Unsupported numeric type.");
-        }
-
-        return noisyValue;
+        return switch (originalValue) {
+            case Integer i -> i + (int) (Math.random() * (2 * noiseRange + 1) - noiseRange);
+            case Long l -> l + (int) (Math.random() * (2 * noiseRange + 1) - noiseRange);
+            case Float v -> v + (Math.random() * noiseRange - noiseRange / 2);
+            case Double v -> v + (Math.random() * noiseRange - noiseRange / 2);
+            case BigDecimal bigDecimal -> bigDecimal.doubleValue() + (Math.random() * noiseRange - noiseRange / 2);
+            case null, default -> throw new IllegalArgumentException("Unsupported numeric type.");
+        };
     }
 
     private Object preserveDecimalFormat(Object originalValue, double noisyValue) {
