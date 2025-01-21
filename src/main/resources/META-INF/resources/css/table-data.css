@@ -1,11 +1,11 @@
 .table-concept {
     width: 100%;
     overflow: hidden;
-    background-color: #F2F2F2;
+    background-color: #ddd;
     border-radius: 1px;
     box-sizing: border-box;
     position: relative;
-    padding: 10px;
+    padding-top: 10px;
 }
 
 .table-display {
@@ -13,13 +13,15 @@
     text-align: right;
     background-color: #f9f9f9;
     border-bottom: 1px solid #ccc;
+    height: 40px;
 }
 
 
 .table-scroll-container {
     width: 100%;
-    overflow-x: auto;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    background-color: white;
 }
 
 table {

@@ -53,7 +53,8 @@ function toggleFormsAndTable(isVisible) {
     }
 
     if (isVisible) {
-        openTab(event, 'hashingForm');
+        const hashingTab = document.querySelector(".tab-link");
+        openTab({ currentTarget: hashingTab }, 'hashingForm');
     }
 
     else {
@@ -99,7 +100,6 @@ function loadPageData() {
 }
 
 // Prikaz podataka u tablici
-// Prikaz podataka u tablici
 function displayTableData(data) {
     const tableHeaders = document.getElementById("tableHeaders");
     const tableBody = document.getElementById("tableBody");
@@ -138,7 +138,6 @@ function displayTableData(data) {
         console.warn("Table is empty.");
     }
 }
-
 
 // Ažuriranje informacija o paginaciji
 function updatePaginationInfo() {
@@ -192,9 +191,9 @@ function populateForms(data) {
     const noiseDropdown = document.getElementById("noiseColumn");
     const hashingDropdown = document.getElementById("primaryKeyColumn");
 
-    hashingDropdown.innerHTML = `<option value="">-- Odaberite stupac --</option>`;
-    suppressionDropdown.innerHTML = `<option value="">-- Odaberite stupac --</option>`;
-    noiseDropdown.innerHTML = `<option value="">-- Odaberite stupac --</option>`;
+    hashingDropdown.innerHTML = `<option value="">-- odaberi atribut --</option>`;
+    suppressionDropdown.innerHTML = `<option value="">-- odaberi atribut --</option>`;
+    noiseDropdown.innerHTML = `<option value="">-- odaberi atribut --</option>`;
 
     const numericTypes = ["INT", "BIGINT", "FLOAT", "DOUBLE", "DECIMAL", "INT4", "NUMERIC", "SERIAL"];
 

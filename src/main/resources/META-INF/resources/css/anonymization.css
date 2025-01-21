@@ -1,0 +1,92 @@
+.forms {
+    padding: 20px;
+    background-color: #F2F2F2;
+    margin-top: 20px;
+    margin-right: 20px;
+    box-sizing: border-box;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: -1px;
+    width: 100%;
+}
+
+.tab-link {
+    padding: 10px 20px;
+    background-color: #f2f2f2;
+    color: #333;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 1px 1px 0 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 16px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.tab-link.active {
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #ffffff;
+    z-index: 1;
+}
+
+.tab-link:hover:not(.active) {
+    background-color: #e0e0e0;
+}
+
+.tab-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 0 1px 1px 1px;
+    margin-top: -1px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    gap: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.tab-content label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.tab-content select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+}
+
+.form-button-action {
+    width: 200px;
+    padding: 10px;
+    background-color: #cccccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.form-button-action:hover {
+    background-color: #7a7a7a;
+}

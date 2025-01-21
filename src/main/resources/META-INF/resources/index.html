@@ -69,21 +69,24 @@
       <div id="hashingForm" class="tab-content" style="display: block;">
         <h2>Hashiranje primarnog ključa</h2>
         <label for="primaryKeyColumn">Odaberi primarni ključ:</label>
-        <select id="primaryKeyColumn"></select>
-        <button onclick="applyHashing()">Primjeni</button>
+        <select id="primaryKeyColumn" class="form-select"></select>
+        <br>
+        <button onclick="applyHashing()" class="form-button form-button-action">Primjeni</button>
       </div>
       <div id="suppressionForm" class="tab-content" style="display: none;">
         <h2>Supresija podataka</h2>
-        <label for="suppressionColumn">Odaberi stupac za supresiju:</label>
-        <select id="suppressionColumn"></select>
-        <button onclick="applySuppression()">Primjeni</button>
+        <label for="suppressionColumn">Odaberi atribut:</label>
+        <select id="suppressionColumn" class="form-select"></select>
+        <br>
+        <button onclick="applySuppression()" class="form-button form-button-action">Primjeni</button>
       </div>
       <div id="noiseAdditionForm" class="tab-content" style="display: none;">
         <h2>Dodavanje šuma</h2>
-        <label for="noiseColumn">Odaberi numerički stupac:</label>
-        <select id="noiseColumn"></select>
+        <label for="noiseColumn">Odaberi atribut:</label>
+        <select id="noiseColumn" class="form-select"></select>
+        <br>
         <label for="noiseParameter">Odaberi parametar:</label>
-        <select id="noiseParameter">
+        <select id="noiseParameter" class="form-select">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -95,9 +98,11 @@
           <option value="9">9</option>
           <option value="10">10</option>
         </select>
-        <button onclick="applyNoise()">Primjeni</button>
+        <br>
+        <button onclick="applyNoise()" class="form-button form-button-action">Primjeni</button>
       </div>
     </div>
+
     <div class="log" id="log">
       <pre id="logText"></pre>
     </div>

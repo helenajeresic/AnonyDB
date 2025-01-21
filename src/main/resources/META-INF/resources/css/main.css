@@ -1,5 +1,5 @@
 body {
-    background-color: #F7F7F7;
+    background-color: #ddd;
     margin: 0;
 }
 
@@ -14,10 +14,11 @@ body {
     width: 60%;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     flex-grow: 1;
     text-align: left;
     border-right: 2px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 
@@ -25,7 +26,6 @@ body {
     width: 40%;
     display: flex;
     flex-direction: column;
-    background-color: #cccccc;
     overflow-y: auto;
     box-sizing: border-box;
     border-left: 2px solid #ddd;
@@ -35,12 +35,4 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-}
-
-.right-side .log {
-    height: 50%;
-    margin-top: 20px;
-    border-top: 2px solid #ddd;
-    padding-top: 10px;
-    overflow-y: auto;
 }

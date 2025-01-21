@@ -1,0 +1,28 @@
+.right-side .log {
+    height: 50%;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding-top: 15px;
+    padding-left: 10px;
+    overflow-y: auto;
+    background-color: #F2F2F2;
+    border-radius: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.log .date-time {
+    color: #D9534F;
+    font-weight: bold;
+    margin-right: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: nowrap;
+}
+
+.log pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    line-height: 1.5;
+}
