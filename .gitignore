@@ -48,4 +48,4 @@ nb-configuration.xml
 node_modules/
 
 # Ignore application.properties
-/src/main/resources/application.properties
+#/src/main/resources/application.properties
