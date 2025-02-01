@@ -1,3 +1,6 @@
+// Funkcija koja pokreće proces izvoza svih podataka.
+// Nakon uspješnog izvoza, korisnik će biti obaviješten o uspjehu putem poruke.
+// Ako dođe do greške, korisnik će biti obaviješten o pogrešci.
 function exportData() {
     fetch("/export/all", { method: "POST" })
         .then((response) => {

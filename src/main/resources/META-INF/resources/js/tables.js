@@ -5,7 +5,9 @@ let totalItems = 0;
 let tableData = [];
 let metaData = [];
 
-// Dohvati imena svih tablica u bazi
+// Funkcija koja se poziva nakon učitavanja DOM-a.
+// Dohvaća popis tablica sa servera i popunjava dropdown s tim tablicama.
+// Ako dođe do greške prilikom dohvaćanja podataka, prijavit će se u konzolu.
 document.addEventListener("DOMContentLoaded", function () {
     toggleFormsAndTable(false);
 
@@ -18,7 +20,18 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => console.error("Error fetching tables:", error));
 });
 
-// Popunjavanje dropdowna s imenima tablica
+// Event listener za promjenu odabrane tablice.
+// Kada korisnik odabere tablicu, poziva se funkcija za dohvat podataka te tablice.
+document.getElementById("tables").addEventListener("change", function (event) {
+    selectedTable = event.target.value;
+    toggleFormsAndTable(selectedTable);
+    if (selectedTable) {
+        fetchTableData(selectedTable);
+    }
+});
+
+// Popunjava dropdown s imenima tablica koje su dohvaćene sa servera.
+// Ako server ne pošalje valjane tablice, dropdown ostaje prazan ili s osnovnim tekstom.
 function populateTablesDropdown(tables) {
     const dropdown = document.getElementById("tables");
     dropdown.innerHTML = `<option value="">-- odaberi tablicu --</option>`;
@@ -30,15 +43,8 @@ function populateTablesDropdown(tables) {
     });
 }
 
-// Event listener za promjenu odabrane tablice
-document.getElementById("tables").addEventListener("change", function (event) {
-    selectedTable = event.target.value;
-    toggleFormsAndTable(selectedTable);
-    if (selectedTable) {
-        fetchTableData(selectedTable);
-    }
-});
-
+// Prikazuje ili skriva forme i tablicu ovisno o uvjetima.
+// Ako je tablica odabrana, forme i tablica će biti vidljive. Inače, bit će skrivene.
 function toggleFormsAndTable(isVisible) {
     const displayValue = isVisible ? "block" : "none";
 
@@ -65,7 +71,8 @@ function toggleFormsAndTable(isVisible) {
     }
 }
 
-// Dohvaćanje podataka za odabranu tablicu
+// Dohvaća podatke za odabranu tablicu i njene metapodatke.
+// Ako dođe do greške prilikom dohvaćanja, ispisat će se u konzolu.
 function fetchTableData(tableName) {
     Promise.all([
         fetch(`/tables/${tableName}`).then((response) => {
@@ -88,7 +95,7 @@ function fetchTableData(tableName) {
         .catch((error) => console.error("Error fetching data or metadata:", error));
 }
 
-// Učitaj podatke za trenutnu stranicu
+// Učitaj podatke za trenutnu stranicu tablice.
 function loadPageData() {
     const start = (currentPage - 1) * itemsPerPage;
     const end = Math.min(currentPage * itemsPerPage, totalItems);
@@ -99,7 +106,7 @@ function loadPageData() {
     updatePaginationInfo();
 }
 
-// Prikaz podataka u tablici
+// Prikaz podataka u tablici.
 function displayTableData(data) {
     const tableHeaders = document.getElementById("tableHeaders");
     const tableBody = document.getElementById("tableBody");
@@ -157,7 +164,7 @@ function updatePaginationInfo() {
     updatePageNumbers();
 }
 
-// Promjena stranice
+// Promjena stranice (prethodna ili sljedeća).
 function changePage(direction) {
     if (direction === 'prev' && currentPage > 1) {
         currentPage--;
@@ -216,8 +223,7 @@ function updatePageNumbers() {
     }
 }
 
-
-// Popunjavanje dropdownova za forme
+// Popunjavanje dropdownova za forme (hashiranje, supresija, dodavanje šuma) sa atributima na koje smijemo primjeniti te metode.
 function populateForms(data) {
     const suppressionDropdown = document.getElementById("suppressionColumn");
     const noiseDropdown = document.getElementById("noiseColumn");
@@ -255,6 +261,7 @@ function populateForms(data) {
     });
 }
 
+// Funkcija koja popunjava prazne redove u tablici ako nema dovoljno podataka za prikaz.
 function fillEmptyRows(currentRowCount) {
     const tableBody = document.getElementById("tableBody");
     const totalRows = 15;
@@ -274,6 +281,7 @@ function fillEmptyRows(currentRowCount) {
     }
 }
 
+// Funkcija za formatiranje datuma u lokalni oblik (DD.MM.YYYY).
 function formatDate(isoDate) {
     const date = new Date(isoDate);
 

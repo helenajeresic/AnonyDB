@@ -1,3 +1,7 @@
+// Funkcija koja primjenjuje tehniku hashiranja na odabrani atribut u tablici.
+// Provjerava je li odabrani atribut postavljen kao primarni ključ i zatim pokreće zahtjev za primjenu hashiranja.
+// Ako je tehnika već primijenjena ili ako atribut nije primarni ključ, korisnik će biti obaviješten.
+// U slučaju uspješne primjene, ažurira podatke i log.
 function applyHashing() {
     const selectedColumn = document.getElementById("primaryKeyColumn").value;
     if (!selectedColumn) {
@@ -26,6 +30,10 @@ function applyHashing() {
         });
 }
 
+// Funkcija koja primjenjuje tehniku supresije na odabrani atribut u tablici.
+// Provjerava je li atribut za supresiju ispravno odabran i zatim pokreće zahtjev za primjenu tehnike supresije.
+// Ako je tehnika već primijenjena ili ako dođe do pogreške, korisnik će biti obaviješten.
+// U slučaju uspješne primjene, ažurira podatke i log.
 function applySuppression() {
     const selectedColumn = document.getElementById("suppressionColumn").value;
     if (!selectedColumn) {
@@ -54,6 +62,10 @@ function applySuppression() {
         });
 }
 
+// Funkcija koja primjenjuje tehniku dodavanja šuma na odabrani atribut u tablici.
+// Provjerava je li odabran atribut za šum i parametar za šum, te pokreće zahtjev za primjenu tehnike dodavanja šuma.
+// Ako je tehnika već primijenjena ili ako dođe do pogreške, korisnik će biti obaviješten.
+// U slučaju uspješne primjene, ažurira podatke i log.
 function applyNoise() {
     const selectedColumn = document.getElementById("noiseColumn").value;
     const noiseParameter = document.getElementById("noiseParameter").value;
@@ -82,6 +94,9 @@ function applyNoise() {
         });
 }
 
+// Funkcija koja ažurira log s primjenjenim tehnikama anonimizacije.
+// Svaka primjena tehnike anonimizacije bilježi se u log sa datumom i vremenom kada je tehnika primijenjena.
+// Ovaj zapis pomaže pratiti primijenjene promjene.
 function updateTechniquesLog(message) {
     const logText = document.getElementById("logText");
 
@@ -103,8 +118,9 @@ function updateTechniquesLog(message) {
     logText.appendChild(logEntry);
 }
 
-
-
+// Funkcija koja otvara određeni tab u sučelju i prikazuje njegov sadržaj.
+// Ova funkcija omogućuje navigaciju između različitih tabova na korisničkom sučelju.
+// Prikazuje odgovarajući tab, dok sve ostale tabove skriva.
 function openTab(event, formName) {
     var i, tabContent, tabLinks;
 

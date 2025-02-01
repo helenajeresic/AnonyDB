@@ -1,3 +1,7 @@
+// Funkcija koja vraća sve promjene na izvorno stanje baze podataka.
+// Prvo korisnik mora potvrditi resetiranje. Ako korisnik potvrdi, šalje POST zahtjev za resetiranje podataka.
+// Nakon resetiranja, ponovno dohvaća tablice i ažurira sučelje.
+// Ako dođe do pogreške, obavještava korisnika o tome.
 function resetAllChanges() {
     const userConfirmed = window.confirm("Jeste li sigurni da želite resetirati sve promjene? Ova akcija će vratiti izvorno stanje baze podataka.");
 
@@ -28,6 +32,8 @@ function resetAllChanges() {
     }
 }
 
+// Funkcija koja briše log s primijenjenim tehnikama anonimizacije.
+// Ova funkcija briše tekstualni sadržaj unutar elementa s ID-jem 'logText'.
 function clearTechniquesLog() {
     const logText = document.getElementById("logText");
     logText.textContent = "";
