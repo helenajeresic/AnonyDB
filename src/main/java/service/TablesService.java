@@ -16,6 +16,12 @@ public class TablesService {
     private final Map<String, List<Map<String, Object>>> modifiedData = new HashMap<>();
     private final Map<String, Map<String, String>> columnAnonymizationState = new HashMap<>();
 
+    /**
+     * Dohvaća popis svih tablica u bazi podataka.
+     *
+     * @return Lista imena tablica.
+     * @throws SQLException Ako dođe do greške prilikom dohvaćanja podataka.
+     */
     public List<String> getTables() throws SQLException {
         List<String> tables = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
@@ -28,6 +34,13 @@ public class TablesService {
         return tables;
     }
 
+    /**
+     * Dohvaća podatke iz određene tablice.
+     *
+     * @param tableName Ime tablice.
+     * @return Lista mapa koje predstavljaju retke tablice.
+     * @throws SQLException Ako dođe do greške pri dohvaćanju podataka.
+     */
     public List<Map<String, Object>> getTableData(String tableName) throws SQLException {
         if (!modifiedData.containsKey(tableName)) {
             loadTableDataIntoMemory(tableName);
@@ -35,6 +48,12 @@ public class TablesService {
         return modifiedData.get(tableName);
     }
 
+    /**
+     * Učitava podatke tablice u memoriju kako bi se mogli mijenjati i obrađivati.
+     *
+     * @param tableName Ime tablice.
+     * @throws SQLException Ako dođe do greške pri dohvaćanju podataka.
+     */
     private void loadTableDataIntoMemory(String tableName) throws SQLException {
         List<Map<String, Object>> data = new ArrayList<>();
         String query = "SELECT * FROM " + tableName;
@@ -58,7 +77,14 @@ public class TablesService {
         modifiedData.put(tableName, data);
     }
 
-    // Dohvaća metapodatke za određenu tablicu, uključujući primarne i strane ključeve
+    /**
+     * Dohvaća metapodatke za određenu tablicu, uključujući nazive stupaca, tipove podataka,
+     * primarne i strane ključeve.
+     *
+     * @param tableName Ime tablice.
+     * @return Lista mapa koje sadrže metapodatke o svakom stupcu.
+     * @throws SQLException Ako dođe do greške pri dohvaćanju podataka.
+     */
     public List<Map<String, Object>> getTableMetadata(String tableName) throws SQLException {
         List<Map<String, Object>> columns = new ArrayList<>();
 
@@ -82,7 +108,6 @@ public class TablesService {
             }
         }
 
-        // Dodaj informacije o primarnim ključevima
         try (Connection connection = dataSource.getConnection();
              ResultSet primaryKeys = connection.getMetaData().getPrimaryKeys(null, null, tableName)) {
 
@@ -92,7 +117,8 @@ public class TablesService {
             }
 
             for (Map<String, Object> column : columns) {
-                column.put("isPrimaryKey", primaryKeyColumns.contains(column.get("columnName")));
+                String columnName = (String) column.get("columnName");
+                column.put("isPrimaryKey", primaryKeyColumns.contains(columnName));
             }
         }
 
@@ -117,12 +143,21 @@ public class TablesService {
         return columns;
     }
 
-    // Resetiraj sve promjene
+    /**
+     * Resetira sve promjene nad podacima u memoriji.
+     */
     public void resetAllChanges() {
         modifiedData.clear();
         columnAnonymizationState.clear();
     }
 
+    /**
+     * Provjerava postoji li tablica u bazi podataka.
+     *
+     * @param tableName Ime tablice.
+     * @return True ako tablica postoji, inače false.
+     * @throws SQLException Ako dođe do greške pri provjeri.
+     */
     private boolean tableExists(String tableName) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DatabaseMetaData metaData = connection.getMetaData();
@@ -131,14 +166,36 @@ public class TablesService {
         }
     }
 
+    /**
+     * Provjerava je li stupac već anonimiziran.
+     *
+     * @param tableName  Ime tablice.
+     * @param columnName Ime stupca.
+     * @return True ako je stupac već anonimiziran, inače false.
+     */
     public boolean isColumnAnonymized(String tableName, String columnName) {
         return columnAnonymizationState.getOrDefault(tableName, new HashMap<>()).containsKey(columnName);
     }
 
+    /**
+     * Postavlja tehniku anonimizacije za određeni stupac.
+     *
+     * @param tableName  Ime tablice.
+     * @param columnName Ime stupca.
+     * @param technique  Tehnika anonimizacije.
+     */
     public void setColumnAnonymizationTechnique(String tableName, String columnName, String technique) {
         columnAnonymizationState.computeIfAbsent(tableName, k -> new HashMap<>()).put(columnName, technique);
     }
 
+    /**
+     * Provjerava je li određeni stupac primarni ključ.
+     *
+     * @param tableName  Ime tablice.
+     * @param columnName Ime stupca.
+     * @return True ako je stupac primarni ključ, inače false.
+     * @throws SQLException Ako dođe do greške pri dohvaćanju podataka.
+     */
     public boolean isPrimaryKey(String tableName, String columnName) throws SQLException {
         List<Map<String, Object>> metadata = getTableMetadata(tableName);
         for (Map<String, Object> column : metadata) {
@@ -149,6 +206,14 @@ public class TablesService {
         return false;
     }
 
+    /**
+     * Provjerava je li određeni stupac strani ključ.
+     *
+     * @param tableName  Ime tablice.
+     * @param columnName Ime stupca.
+     * @return True ako je stupac strani ključ, inače false.
+     * @throws SQLException Ako dođe do greške pri dohvaćanju podataka.
+     */
     public boolean isForeignKey(String tableName, String columnName) throws SQLException {
         List<Map<String, Object>> metadata = getTableMetadata(tableName);
         for (Map<String, Object> column : metadata) {

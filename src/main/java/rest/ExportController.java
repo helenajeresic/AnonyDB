@@ -15,6 +15,10 @@ public class ExportController {
     @Inject
     ExportService exportService;
 
+    /**
+     * Metoda koja izvozi sve podatke i sprema ih u direktorij.
+     * @return HTTP odgovor s porukom o uspješnosti ili grešci.
+     */
     @POST
     @Path("/all")
     @Produces("application/json")

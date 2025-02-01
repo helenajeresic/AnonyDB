@@ -18,6 +18,14 @@ public class ExportService {
     @Inject
     TablesService tablesService;
 
+    /**
+     * Metoda koja izvozi sve podatke iz baze u CSV formatu i sprema ih u ZIP datoteku.
+     * Svaka tablica se sprema kao zasebna CSV datoteka unutar ZIP arhive.
+     *
+     * @return Putanja do generirane ZIP datoteke.
+     * @throws IOException Ako dođe do greške pri pisanju datoteke.
+     * @throws SQLException Ako dođe do greške pri dohvaćanju podataka iz baze.
+     */
     public Path exportAllData() throws IOException, SQLException {
         Path zipFilePath = Paths.get("AnonyDB.zip");
 

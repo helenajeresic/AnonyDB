@@ -12,6 +12,12 @@ public class AnonymizationController {
     @Inject
     AnonymizationService anonymizationService;
 
+    /**
+     * Metoda koja primjenjuje hashiranje na primarni ključ u određenoj tablici.
+     * @param tableName Naziv tablice u kojoj se hashira primarni ključ.
+     * @param primaryKeyColumn Naziv stupca koji predstavlja primarni ključ.
+     * @return HTTP odgovor s porukom o uspješnosti ili grešci.
+     */
     @POST
     @Path("/hash/{tableName}/{primaryKeyColumn}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -27,6 +33,12 @@ public class AnonymizationController {
         }
     }
 
+    /**
+     * Metoda koja primjenjuje supresiju na određeni stupac u tablici.
+     * @param tableName Naziv tablice u kojoj se primjenjuje supresija.
+     * @param columnName Naziv stupca na kojem se vrši supresija.
+     * @return HTTP odgovor s porukom o uspješnosti ili grešci.
+     */
     @POST
     @Path("/suppression/{tableName}/{columnName}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,6 +54,13 @@ public class AnonymizationController {
         }
     }
 
+    /**
+     * Metoda koja primjenjuje dodavanje šuma na određeni stupac u tablici..
+     * @param tableName Naziv tablice u kojoj se dodaje šum.
+     * @param columnName Naziv stupca na koji se dodaje šum.
+     * @param noiseParameter Parametar koji određuje raspon šuma.
+     * @return HTTP odgovor s porukom o uspješnosti ili grešci.
+     */
     @POST
     @Path("/noise/{tableName}/{columnName}")
     @Produces(MediaType.APPLICATION_JSON)

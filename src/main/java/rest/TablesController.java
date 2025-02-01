@@ -16,6 +16,10 @@ public class TablesController {
     @Inject
     TablesService tablesService;
 
+    /**
+     * Metoda koja dohvaća popis svih tablica u bazi podataka.
+     * @return HTTP odgovor s popisom tablica ili poruka o grešci.
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTables() {
@@ -29,6 +33,11 @@ public class TablesController {
         }
     }
 
+    /**
+     * Metoda koja dohvaća sve podatke iz određene tablice.
+     * @param tableName Naziv tablice iz koje se dohvaćaju podaci.
+     * @return HTTP odgovor s podacima tablice ili poruka o grešci.
+     */
     @GET
     @Path("/{tableName}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -43,6 +52,11 @@ public class TablesController {
         }
     }
 
+    /**
+     * Metoda koja dohvaća metapodatke (strukturu) određene tablice.
+     * @param tableName Naziv tablice čiji se metapodaci dohvaćaju.
+     * @return HTTP odgovor s metapodacima tablice ili poruka o grešci.
+     */
     @GET
     @Path("/metadata/{tableName}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,6 +71,10 @@ public class TablesController {
         }
     }
 
+    /**
+     * Metoda koja resetira sve na originalne podatke iz baze.
+     * @return HTTP odgovor s metapodacima tablice ili poruka o grešci.
+     */
     @POST
     @Path("/reset")
     @Produces(MediaType.APPLICATION_JSON)
