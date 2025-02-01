@@ -28,5 +28,4 @@ The application implements various data anonymization techniques, including **ha
 ### **Logging**
 - All actions and operations performed within the application are logged to track and audit changes made to the data.
 
----
 
